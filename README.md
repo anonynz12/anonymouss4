@@ -45,7 +45,7 @@ Google Drive Link: https://drive.google.com/file/d/1Js_RMDL82sU-kj2AIa9Lvn4lFWUa
 ## MGIGNN Training 
 
 ```python
-python train.py --cuda_id 0 --model [gcn/graphsage/gat/sgc/dna/gcnii/film/ssgc/fagcn/gat2conv] --hidden_dim 64 --eta 1 --log_dir ./log/ --k 3 --epochs 50 --dataset ppi
+python train.py --cuda_id 0 --model [gcn/graphsage/gat/sgc/dna/gcnii/film/ssgc/fagcn/gat2conv] --hidden_dim 64 --eta 1 --log_dir ./log/ --k 3 --epochs 50 --dataset ppi --normalize True --criterion sigmoid --run_times 5
 ```
 
 ## MGIGNN Prediction
