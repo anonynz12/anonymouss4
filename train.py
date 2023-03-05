@@ -38,8 +38,17 @@ def train(run_time, args):
                           and args.cuda else 'cpu')
     print(device)
 
+
+
     if args.dataset == 'ppi':
-        train_dataset = PPI("./data/PPI", split='train')
+
+        if args.model == 'gcnii':
+            path = "./data/GCN2_PPI"
+            pre_transform = T.Compose([T.GCNNorm(), T.ToSparseTensor()])
+            train_dataset = PPI(path, split='train',
+                                pre_transform=pre_transform)
+        else:
+            train_dataset = PPI("./data/PPI", split='train')
         train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
         non_hop_adjacency_matrix_dict_path = os.path.join("./data/PPI/non_hop_2_adjacency_matrix_dict_val_batch_size_2.pkl")
         train_node_id_dict_path = os.path.join("./data/PPI/train_node_id_dict.pkl")
@@ -174,17 +183,17 @@ def get_args():
                         help='Number of hidden units.')
     parser.add_argument('--patience', type=int, default=100,
                         help='Patience')
-    parser.add_argument('--normalize', required=True)
+    parser.add_argument('--normalize', type=bool, default=True)
     parser.add_argument('--model', required=True,
                         help='training_model')
     parser.add_argument('--eta', type=float, required=True,
                         help='trade-off parameters')
     parser.add_argument('--k', type=int, required=True,
                         help='Number of global similar nodes')
-    parser.add_argument('--criterion', type=str, required=True,
+    parser.add_argument('--criterion', type=str, default='sigmoid',
                         help='softmax or sigmoid')
     parser.add_argument('--dataset', type=str, required=True)
-    parser.add_argument('--run_times', type=int, required=True)
+    parser.add_argument('--run_times', type=int, default=1)
     parser.add_argument('--log_dir', type=str, required=True)
 
     return parser.parse_args()
